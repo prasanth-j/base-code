@@ -12,33 +12,60 @@ A Laravel application with User and Blog CRUD operations, built with Laravel UI 
 
 ## Requirements
 
-- PHP >= 8.2
+- XAMPP (includes PHP >= 8.2 and MySQL)
 - Composer
-- Node.js and NPM
-- MySQL (default) or PostgreSQL/SQLite
 
 ## Installation
 
-### 1. Clone the repository
+### 1. Clone the base repository
 
 ```bash
 git clone https://github.com/prasanth-j/base-code.git
 cd base-code
 ```
 
-### 2. Install PHP dependencies
+### 2. Set up your own Bitbucket repository
+
+After cloning, you'll need to add this project to your own Bitbucket repository:
+
+1. **Create a new repository on Bitbucket** (or use an existing one)
+
+2. **Remove the existing remote origin** (if it exists):
+   ```bash
+   git remote remove origin
+   ```
+
+3. **Add your Bitbucket repository as the new remote**:
+   ```bash
+   git remote add origin https://bitbucket.org/your-username/your-repository-name.git
+   ```
+   
+   Or if using SSH:
+   ```bash
+   git remote add origin git@bitbucket.org:your-username/your-repository-name.git
+   ```
+
+4. **Push to your Bitbucket repository**:
+   ```bash
+   git branch -M main
+   git push -u origin main
+   ```
+
+> **Note**: Replace `your-username` and `your-repository-name` with your actual Bitbucket username and repository name.
+
+### 3. Install PHP dependencies
 
 ```bash
 composer install
 ```
 
-### 3. Install Node dependencies
+### 4. Start XAMPP services
 
-```bash
-npm install
-```
+1. **Open XAMPP Control Panel**
+2. **Start Apache** (click the "Start" button)
+3. **Start MySQL** (click the "Start" button)
 
-### 4. Environment setup
+### 5. Environment setup
 
 Copy the `.env.example` file to `.env`:
 
@@ -46,40 +73,51 @@ Copy the `.env.example` file to `.env`:
 cp .env.example .env
 ```
 
-Update the `.env` file with your MySQL database credentials:
+Update the `.env` file with your MySQL database credentials. For XAMPP, use these default settings:
 
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=your_database_name
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
+DB_DATABASE=laravel_app
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
-### 5. Generate application key
+> **Note**: XAMPP's default MySQL username is `root` with no password. If you've set a password, update `DB_PASSWORD` accordingly.
+
+### 6. Generate application key
 
 ```bash
 php artisan key:generate
 ```
 
-### 6. Database setup
+### 7. Database setup
 
-The application uses MySQL by default. Create a MySQL database:
+Create a MySQL database using phpMyAdmin:
 
-```sql
-CREATE DATABASE your_database_name;
-```
+1. **Open phpMyAdmin** in your browser: `http://localhost/phpmyadmin`
+2. **Click on "New"** in the left sidebar
+3. **Enter database name**: `laravel_app` (or the name you used in `.env`)
+4. **Click "Create"**
 
-Make sure your `.env` file has the correct MySQL credentials (see step 4).
+Alternatively, you can create the database using SQL:
 
-### 7. Run migrations
+1. Go to the **SQL** tab in phpMyAdmin
+2. Run this command:
+   ```sql
+   CREATE DATABASE laravel_app;
+   ```
+
+Make sure the database name matches the `DB_DATABASE` value in your `.env` file (see step 5).
+
+### 8. Run migrations
 
 ```bash
 php artisan migrate
 ```
 
-### 8. Seed the database (optional)
+### 9. Seed the database (optional)
 
 This will create sample users and blogs:
 
@@ -91,18 +129,6 @@ Or run migrations and seed together:
 
 ```bash
 php artisan migrate:fresh --seed
-```
-
-### 9. Build frontend assets
-
-```bash
-npm run build
-```
-
-For development with hot reload:
-
-```bash
-npm run dev
 ```
 
 ## Running the Application
