@@ -1,58 +1,216 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel User & Blog CRUD Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel application with User and Blog CRUD operations, built with Laravel UI (Bootstrap).
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **User Management**: Full CRUD operations for users (Create, Read, Update, Delete)
+- **Blog Management**: Full CRUD operations for blogs (Create, Read, Update, Delete)
+- **Authentication**: Laravel UI authentication system (Login, Register, Logout)
+- **Database Factories**: Factories for generating test data
+- **Database Seeders**: Seeders for populating the database with sample data
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 8.2
+- Composer
+- Node.js and NPM
+- MySQL (default) or PostgreSQL/SQLite
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 1. Clone the repository
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+git clone https://github.com/prasanth-j/base-code.git
+cd base-code
+```
 
-## Laravel Sponsors
+### 2. Install PHP dependencies
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+```
 
-### Premium Partners
+### 3. Install Node dependencies
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+npm install
+```
 
-## Contributing
+### 4. Environment setup
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Copy the `.env.example` file to `.env`:
 
-## Code of Conduct
+```bash
+cp .env.example .env
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Update the `.env` file with your MySQL database credentials:
 
-## Security Vulnerabilities
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 5. Generate application key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Database setup
+
+The application uses MySQL by default. Create a MySQL database:
+
+```sql
+CREATE DATABASE your_database_name;
+```
+
+Make sure your `.env` file has the correct MySQL credentials (see step 4).
+
+### 7. Run migrations
+
+```bash
+php artisan migrate
+```
+
+### 8. Seed the database (optional)
+
+This will create sample users and blogs:
+
+```bash
+php artisan db:seed
+```
+
+Or run migrations and seed together:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### 9. Build frontend assets
+
+```bash
+npm run build
+```
+
+For development with hot reload:
+
+```bash
+npm run dev
+```
+
+## Running the Application
+
+### Start the development server
+
+```bash
+php artisan serve
+```
+
+The application will be available at `http://localhost:8000`
+
+### Using the dev script (includes server, queue, logs, and vite)
+
+```bash
+composer run dev
+```
+
+## Database Structure
+
+### Users Table
+- `id` - Primary key
+- `name` - User's name
+- `email` - User's email (unique)
+- `email_verified_at` - Email verification timestamp
+- `password` - Hashed password
+- `remember_token` - Remember me token
+- `created_at` - Creation timestamp
+- `updated_at` - Update timestamp
+
+### Blogs Table
+- `id` - Primary key
+- `title` - Blog title
+- `content` - Blog content
+- `user_id` - Foreign key to users table
+- `created_at` - Creation timestamp
+- `updated_at` - Update timestamp
+
+## Routes
+
+### Authentication Routes
+- `GET /login` - Login page
+- `POST /login` - Login action
+- `GET /register` - Registration page
+- `POST /register` - Registration action
+- `POST /logout` - Logout action
+
+### User CRUD Routes (Protected by auth)
+- `GET /users` - List all users
+- `GET /users/create` - Show create user form
+- `POST /users` - Store new user
+- `GET /users/{user}/edit` - Show edit user form
+- `PUT /users/{user}` - Update user
+- `DELETE /users/{user}` - Delete user
+
+### Blog CRUD Routes (Protected by auth)
+- `GET /blogs` - List all blogs
+- `GET /blogs/create` - Show create blog form
+- `POST /blogs` - Store new blog
+- `GET /blogs/{blog}/edit` - Show edit blog form
+- `PUT /blogs/{blog}` - Update blog
+- `DELETE /blogs/{blog}` - Delete blog
+
+## Seeders
+
+### UserSeeder
+Creates:
+- 1 test user (test@example.com)
+- 10 additional random users
+
+### BlogSeeder
+Creates:
+- 3 blogs per user
+
+## Factories
+
+### UserFactory
+Generates fake user data with:
+- Random name
+- Unique email
+- Hashed password (default: "password")
+
+### BlogFactory
+Generates fake blog data with:
+- Random title
+- Random content (3 paragraphs)
+- Associated user_id
+
+## Default Test User
+
+After seeding, you can login with:
+- **Email**: test@example.com
+- **Password**: password
+
+## Usage
+
+1. Register a new account or login with the test user
+2. Navigate to "Users" in the navigation menu to manage users
+3. Navigate to "Blogs" in the navigation menu to manage blogs
+4. Create, edit, or delete users and blogs as needed
+
+## Development
+
+### Code Formatting
+
+```bash
+./vendor/bin/pint
+```
 
 ## License
 
