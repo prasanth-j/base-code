@@ -34,12 +34,21 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('users.index') }}">{{ __('Users') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('blogs.index') }}">{{ __('Blogs') }}</a>
-                            </li>
+                            @can('users.index')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('users.index') }}">{{ __('Users') }}</a>
+                                </li>
+                            @endcan
+                            @can('blogs.index')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('blogs.index') }}">{{ __('Blogs') }}</a>
+                                </li>
+                            @endcan
+                            @can('roles.index')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Roles') }}</a>
+                                </li>
+                            @endcan
                         @endauth
                     </ul>
 

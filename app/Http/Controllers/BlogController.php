@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBlogRequest;
+use App\Http\Requests\UpdateBlogRequest;
 use App\Models\Blog;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
@@ -13,8 +14,22 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::latest()->get();
+        $blogs = Blog::select('id', 'title', 'user_id', 'created_at')
+            ->with(['user:id,name'])
+            ->latest()
+            ->paginate(10);
+
         return view('blogs.index', compact('blogs'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Blog $blog)
+    {
+        $blog->load('user:id,name');
+
+        return view('blogs.show', compact('blog'));
     }
 
     /**
@@ -28,13 +43,9 @@ class BlogController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBlogRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-        ]);
-
+        $validated = $request->validated();
         $validated['user_id'] = Auth::id();
 
         Blog::create($validated);
@@ -54,12 +65,9 @@ class BlogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Blog $blog)
+    public function update(UpdateBlogRequest $request, Blog $blog)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-        ]);
+        $validated = $request->validated();
 
         $blog->update($validated);
 
